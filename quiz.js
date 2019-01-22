@@ -28,30 +28,30 @@ const questions = [
 // answers[i] has all multiple choice answers for the question
 const answers = [
   [{a: '2019', correct: true},
-    {b: '2018', correct: false},
-    {c: '2017', correct: false},
-    {d: '2016', correct: false},
-    {e: '1982', correct: false}],
+    {a: '2018', correct: false},
+    {a: '2017', correct: false},
+    {a: '2016', correct: false},
+    {a: '1982', correct: false}],
   [{a: 'Donald Trump', correct: true},
-    {b: 'George W Bush', correct: false},
-    {c: 'Obama', correct: false},
-    {d: 'Derrick Henry', correct: false},
-    {e: 'Adrian Peterson', correct: false}],  
+    {a: 'George W Bush', correct: false},
+    {a: 'Obama', correct: false},
+    {a: 'Derrick Henry', correct: false},
+    {a: 'Adrian Peterson', correct: false}],  
   [{a: '50', correct: true},
-    {b: '51', correct: false},
-    {c: '49', correct: false},
-    {d: '48', correct: false},
-    {e: '13', correct: false}],
+    {a: '51', correct: false},
+    {a: '49', correct: false},
+    {a: '48', correct: false},
+    {a: '13', correct: false}],
   [{a: '12', correct: true},
-    {b: '14', correct: false},
-    {c: '24', correct: false},
-    {d: '26', correct: false},
-    {e: '11', correct: false}],
+    {a: '14', correct: false},
+    {a: '24', correct: false},
+    {a: '26', correct: false},
+    {a: '11', correct: false}],
   [{a: '2019', correct: true},
-    {b: '2018', correct: false},
-    {c: '2017', correct: false},
-    {d: '2016', correct: false},
-    {e: '1982', correct: false}]
+    {a: '2018', correct: false},
+    {a: '2017', correct: false},
+    {a: '2016', correct: false},
+    {a: '1982', correct: false}]
 ];
 
 function createTopPaneHtml() {
@@ -67,7 +67,7 @@ function createMiddlePaneHtml() {
    <h1 class="js-grade">You have ${STORE.numRight} / ${STORE.qNum} right!</h1>`;
 }
 
-function createBottomPaneHtml() {
+function createBottomPaneHtml(randomOrder) {
   return `
   <form class="js-submit-form">
       <button type="button" class="js-submit-button">Submit</button>
@@ -78,11 +78,11 @@ function createBottomPaneHtml() {
   <span class="quiz-question">${questions[STORE.qNum]}</span>
     <form class="js-multiple-choice-form">
         <ul class="choices js-current-choices">
-          <li class="q1a">${answers[STORE.qNum][0].a}</li>
-          <li class="q2a">${answers[STORE.qNum][1].b}</li>
-          <li class="q3a">${answers[STORE.qNum][2].c}</li>
-          <li class="q4a">${answers[STORE.qNum][3].d}</li>
-          <li class="q5a">${answers[STORE.qNum][4].e}</li>
+          <li class="q1a" id="${randomOrder[0]}">${answers[STORE.qNum][randomOrder[0]].a}</li>
+          <li class="q2a" id="${randomOrder[1]}">${answers[STORE.qNum][randomOrder[1]].a}</li>
+          <li class="q3a" id="${randomOrder[2]}">${answers[STORE.qNum][randomOrder[2]].a}</li>
+          <li class="q4a" id="${randomOrder[3]}">${answers[STORE.qNum][randomOrder[3]].a}</li>
+          <li class="q5a" id="${randomOrder[4]}">${answers[STORE.qNum][randomOrder[4]].a}</li>
       </ul>
     </form>`;
 }
@@ -121,9 +121,11 @@ function renderMiddlePane() {
 }
 
 function renderBottomPane() {
-  let paneHtml = createBottomPaneHtml();
+  let randomOrder = randomizeChoiceOrder();
+  let paneHtml = createBottomPaneHtml(randomOrder);
   console.log(answers[STORE.qNum][0].a);
   $('.js-bottom-pane').html(paneHtml);
+  
   //extension: have a randomSeed array, [1, 2, 3, 4, 5], with random order every time
   //render answers in the order dictated by array
   //this way, correctness is still associated with individual answer, 
@@ -133,8 +135,21 @@ function renderBottomPane() {
   // renderEndScreen();
 }
 
+function randomizeChoiceOrder() {
 
+  let nums = [0, 1, 2, 3, 4];
+  let randomNums = [];
+  let i = nums.length;
+  let j = 0;
 
+  while (i--) {
+    j = Math.floor(Math.random() * (i+1));
+    randomNums.push(nums[j]);
+    nums.splice(j,1);
+  } 
+  return randomNums;
+  //do something with ranNum
+}
 
 function handleStartButton() {
 // start quiz button will also reset quiz, bring us to Q1
@@ -153,8 +168,6 @@ function handleNextButton() {
     STORE.qNum ++;
     renderQuizApp();
   });
-  // validate that an answer has been given?
-  // check current values of numRight/numWrong vs past values, ensure there has been a change
   // display next question in bottom pane
   // display next set of multiple choice options
 }
@@ -165,6 +178,8 @@ function handleSubmitButton() {
     gradeAnswer();
     renderQuizApp();
   });
+  // validate that an answer has been given?
+  // check current values of numRight/numWrong vs past values, ensure there has been a change
 // submit button will display question and selected answer
 // if wrong, red highlight on selection, green highlight on correct
 // display "You are wrong/ You are right" in TopPane
@@ -172,12 +187,22 @@ function handleSubmitButton() {
 }
 
 function validateEntry() {
-
+  if ($('li').hasClass('selected')) {
+    return true;
+  }
+  else {
+    return false;
+  }
 }
 
 function gradeAnswer() {
-  STORE.numRight ++;
-  STORE.numWrong ++;
+  let answerIndex = $('li').has('selected').attr('id').val();
+  if (answers[STORE.qNum][answerIndex].correct === true) {
+    STORE.numRight ++;
+  }
+  else {
+    STORE.numWrong ++;
+  }
 }
 
 function handleChoice() {
@@ -195,6 +220,7 @@ function handleQuizApp() {
   handleNextButton();
   handleSubmitButton();
   handleChoice();
+  randomizeChoiceOrder();
 } 
 
 handleQuizApp();
