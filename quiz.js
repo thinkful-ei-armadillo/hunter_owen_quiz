@@ -64,10 +64,10 @@ function renderTopPane() {
 
 function renderBottomPane() {
 // question text, multiple choice
-      //extension: have a randomSeed array, [1, 2, 3, 4, 5], with random order every time
-      //render answers in the order dictated by array
-      //this way, correctness is still associated with individual answer, 
-      //not with the order it was rendered on the page
+  //extension: have a randomSeed array, [1, 2, 3, 4, 5], with random order every time
+  //render answers in the order dictated by array
+  //this way, correctness is still associated with individual answer, 
+  //not with the order it was rendered on the page
 // if qNum > questions.length
   // renderEndScreen();
 }
