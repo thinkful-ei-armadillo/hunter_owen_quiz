@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* global $ */
 'use strict';
 
 // on first load, only render top panel
@@ -9,7 +11,7 @@
 // at the end, display start, numRight/Wrong
 
 const STORE = {
-  qNum: 0,
+  qNum: null,
   numRight: 0,
   numWrong: 0
 };
@@ -54,65 +56,79 @@ const answers = [
 
 function createTopPaneHtml() {
   return `
-<div class="top-pane">
 <h1>Concussion Quiz</h1>
 <form class="js-quiz-form">
   <button type="button" class="js-start-button">Start Quiz</button>
-</form>
-</div>`;
+</form>`;
 }
 
-function createMidPaneHtml() {
+function createMiddlePaneHtml() {
   return `
-  <div class="middle-pane">
-    <h1 class="js-grade">You have ${STORE.numRight} / ${questions.length} right!</h1>
-    <form class="js-submit-form">
-      <button type="button" class="js-submit-button">Submit</button>
-    </form>
-    <form class="js-next-form">
-      <button type="button" class="js-next-button">Next</button>
-    </form>
-  </div>`;
+   <h1 class="js-grade">You have ${STORE.numRight} / ${STORE.qNum} right!</h1>`;
 }
 
 function createBottomPaneHtml() {
   return `
-<div class="bottom-pane">
-    <span class="quiz-question">${questions[STORE.qNum]}</span>
+  <form class="js-submit-form">
+      <button type="button" class="js-submit-button">Submit</button>
+    </form>
+    <form class="js-next-form">
+      <button type="button" class="js-next-button">Next</button>
+  </form>  
+  <span class="quiz-question">${questions[STORE.qNum]}</span>
     <form class="js-multiple-choice-form">
         <ul class="choices js-current-choices">
-          <li class="q1a">${answers[STORE.qNum][0]}</li>
-          <li class="q2a">${answers[STORE.qNum][1]}</li>
-          <li class="q3a">${answers[STORE.qNum][2]}</li>
-          <li class="q4a">${answers[STORE.qNum][3]}</li>
-          <li class="q5a">${answers[STORE.qNum][4]}</li>
+          <li class="q1a">${answers[STORE.qNum][0].a}</li>
+          <li class="q2a">${answers[STORE.qNum][1].b}</li>
+          <li class="q3a">${answers[STORE.qNum][2].c}</li>
+          <li class="q4a">${answers[STORE.qNum][3].d}</li>
+          <li class="q5a">${answers[STORE.qNum][4].e}</li>
       </ul>
-    </form>
-  </div>`;
+    </form>`;
 }
 
 
 
 // potentially pass parameters
 function renderQuizApp() {
-  renderTopPane();
-  renderBottomPane();
+  if (STORE.qNum === null) { 
+    renderTopPane();    
+  }
+  else if (STORE.qNum < questions.length) {
+    renderTopPane();
+    renderMiddlePane();
+    renderBottomPane();
+  }
+  else if (STORE.qNum >= questions.length) {
+    renderTopPane();
+    renderMiddlePane();
+    $('.js-bottom-pane').empty();
+  }
 }
 
 
-
 function renderTopPane() {
-  let topPaneHtml = createTopPaneHtml();
+  let paneHtml = createTopPaneHtml();
+  $('.js-top-pane').html(paneHtml);
+  console.log('rendering top pane');
+  // render start
+}
 
+function renderMiddlePane() {
+  let paneHtml = createMiddlePaneHtml();
+  $('.js-middle-pane').html(paneHtml);
   // render start, next, correct/incorrect, submit
 }
 
 function renderBottomPane() {
-// question text, multiple choice
+  let paneHtml = createBottomPaneHtml();
+  console.log(answers[STORE.qNum][0].a);
+  $('.js-bottom-pane').html(paneHtml);
   //extension: have a randomSeed array, [1, 2, 3, 4, 5], with random order every time
   //render answers in the order dictated by array
   //this way, correctness is still associated with individual answer, 
   //not with the order it was rendered on the page
+
 // if qNum > questions.length
   // renderEndScreen();
 }
@@ -122,10 +138,21 @@ function renderBottomPane() {
 
 function handleStartButton() {
 // start quiz button will also reset quiz, bring us to Q1
-// reset numRight, numWrong, set qNum = 1
+// reset numRight, numWrong, set qNum = 0
+  $('.js-top-pane').on('click', '.js-start-button', () => {
+    STORE.qNum = 0;
+    STORE.numRight = 0;
+    STORE.numWrong = 0;
+    renderQuizApp();
+  });
 }
 
 function handleNextButton() {
+  $('.js-bottom-pane').on('click', '.js-next-button', () => {
+    console.log(STORE.qNum);
+    STORE.qNum ++;
+    renderQuizApp();
+  });
   // validate that an answer has been given?
   // check current values of numRight/numWrong vs past values, ensure there has been a change
   // display next question in bottom pane
@@ -133,10 +160,24 @@ function handleNextButton() {
 }
 
 function handleSubmitButton() {
+  $('.js-bottom-pane').on('click', '.js-submit-button', () => {
+    validateEntry();
+    gradeAnswer();
+    renderQuizApp();
+  });
 // submit button will display question and selected answer
 // if wrong, red highlight on selection, green highlight on correct
 // display "You are wrong/ You are right" in TopPane
 // update numRight, numWrong, qNum
+}
+
+function validateEntry() {
+
+}
+
+function gradeAnswer() {
+  STORE.numRight ++;
+  STORE.numWrong ++;
 }
 
 function handleChoice() {
