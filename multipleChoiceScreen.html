@@ -9,30 +9,32 @@
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
   <script src="quiz.js"></script>
   <link rel="stylesheet" href="quiz.css">
-  </head>
+</head>
 <body>
   <div class="top-pane">
     <h1>Concussion Quiz</h1>
     <form class="js-quiz-form">
-      <button type="button">Start Quiz</button>
+      <button type="button" class="js-start-button">Start Quiz</button>
     </form>
-    <h1>SCORE</h1>
+  </div>
+  <div class="middle-pane">
+    <h1 class="js-grade">SCORE</h1>
     <form class="js-submit-form">
-      <button type="button">Submit</button>
+      <button type="button" class="js-submit-button">Submit</button>
     </form>
     <form class="js-next-form">
-      <button type="button">Next</button>
+      <button type="button" class="js-next-button">Next</button>
     </form>
   </div>
   <div class="bottom-pane">
     <span class="quiz-question">What year is it?</span>
     <form class="js-multiple-choice-form">
-      <ul>
-        <li>a</li>
-        <li>b</li>
-        <li>c</li>
-        <li>d</li>
-        <li>e</li>
+        <ul class="choices js-current-choices">
+          <li class="q1a">choice one</li>
+          <li class="q2a">choice two</li>
+          <li class="q3a">choice three</li>
+          <li class="q4a">choice four</li>
+          <li class="q5a">choice five</li>
       </ul>
     </form>
   </div>

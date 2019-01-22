@@ -24,33 +24,74 @@ const questions = [
 ];
 
 // answers[i] has all multiple choice answers for the question
-const answers = {
-  q1a: [{a: '2019', correct: true},
+const answers = [
+  [{a: '2019', correct: true},
     {b: '2018', correct: false},
     {c: '2017', correct: false},
     {d: '2016', correct: false},
     {e: '1982', correct: false}],
-  q2a: [{a: 'Donald Trump', correct: true},
+  [{a: 'Donald Trump', correct: true},
     {b: 'George W Bush', correct: false},
     {c: 'Obama', correct: false},
     {d: 'Derrick Henry', correct: false},
     {e: 'Adrian Peterson', correct: false}],  
-  q3a: [{a: '50', correct: true},
+  [{a: '50', correct: true},
     {b: '51', correct: false},
     {c: '49', correct: false},
     {d: '48', correct: false},
     {e: '13', correct: false}],
-  q4a: [{a: '12', correct: true},
+  [{a: '12', correct: true},
     {b: '14', correct: false},
     {c: '24', correct: false},
     {d: '26', correct: false},
     {e: '11', correct: false}],
-  q5a: [{a: '2019', correct: true},
+  [{a: '2019', correct: true},
     {b: '2018', correct: false},
     {c: '2017', correct: false},
     {d: '2016', correct: false},
     {e: '1982', correct: false}]
-};
+];
+
+function createTopPaneHtml() {
+  return `
+<div class="top-pane">
+<h1>Concussion Quiz</h1>
+<form class="js-quiz-form">
+  <button type="button" class="js-start-button">Start Quiz</button>
+</form>
+</div>`;
+}
+
+function createMidPaneHtml() {
+  return `
+  <div class="middle-pane">
+    <h1 class="js-grade">You have ${STORE.numRight} / ${questions.length} right!</h1>
+    <form class="js-submit-form">
+      <button type="button" class="js-submit-button">Submit</button>
+    </form>
+    <form class="js-next-form">
+      <button type="button" class="js-next-button">Next</button>
+    </form>
+  </div>`;
+}
+
+function createBottomPaneHtml() {
+  return `
+<div class="bottom-pane">
+    <span class="quiz-question">${questions[STORE.qNum]}</span>
+    <form class="js-multiple-choice-form">
+        <ul class="choices js-current-choices">
+          <li class="q1a">${answers[STORE.qNum][0]}</li>
+          <li class="q2a">${answers[STORE.qNum][1]}</li>
+          <li class="q3a">${answers[STORE.qNum][2]}</li>
+          <li class="q4a">${answers[STORE.qNum][3]}</li>
+          <li class="q5a">${answers[STORE.qNum][4]}</li>
+      </ul>
+    </form>
+  </div>`;
+}
+
+
 
 // potentially pass parameters
 function renderQuizApp() {
@@ -58,8 +99,12 @@ function renderQuizApp() {
   renderBottomPane();
 }
 
+
+
 function renderTopPane() {
-// render start, next, correct/incorrect, submit
+  let topPaneHtml = createTopPaneHtml();
+
+  // render start, next, correct/incorrect, submit
 }
 
 function renderBottomPane() {
