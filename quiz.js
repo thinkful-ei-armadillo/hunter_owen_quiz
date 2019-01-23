@@ -66,8 +66,7 @@ function createTopPaneHtml() {
 
 function createMiddlePaneHtml() {
   return `
-   <h1 class="js-grade">You have ${STORE.numRight} / ${STORE.qNum} right!</h1>`;
-}
+   <h1 class="js-grade">You have ${STORE.numRight} / ${STORE.qNum} right!</h1>`;}
 
 function createBottomPaneHtml() {
   return `
@@ -80,7 +79,7 @@ function createBottomPaneHtml() {
   <span class="quiz-question">${questions[STORE.qNum]}</span>
     <form class="js-multiple-choice-form">
         <ul class="choices js-current-choices">
-          <li data-url="store-choice-id" class="js-choice ${STORE.choiceId === STORE.randomOrder[0] ? 'selected' : ''}" id="${STORE.randomOrder[0]}"><a href="#">${answers[STORE.qNum][STORE.randomOrder[0]].a}</a></li>
+          <li class="js-choice ${STORE.choiceId === STORE.randomOrder[0] ? 'selected' : ''}" id="${STORE.randomOrder[0]}">${answers[STORE.qNum][STORE.randomOrder[0]].a}</li>
           <li class="js-choice ${STORE.choiceId === STORE.randomOrder[1] ? 'selected' : ''}" id="${STORE.randomOrder[1]}">${answers[STORE.qNum][STORE.randomOrder[1]].a}</li>
           <li class="js-choice ${STORE.choiceId === STORE.randomOrder[2] ? 'selected' : ''}" id="${STORE.randomOrder[2]}">${answers[STORE.qNum][STORE.randomOrder[2]].a}</li>
           <li class="js-choice ${STORE.choiceId === STORE.randomOrder[3] ? 'selected' : ''}" id="${STORE.randomOrder[3]}">${answers[STORE.qNum][STORE.randomOrder[3]].a}</li>
@@ -206,18 +205,15 @@ function gradeAnswer() {
 }
 
 function handleChoice() {
-  $('.js-current-choices').on('click', 'li.js-choice', function(event) {
+  $('.js-bottom-pane').on('click', '.js-choice', function(event) {
     let selectedId = $(event.target).attr('id');
     STORE.choiceId = selectedId;
-    console.log('testing');
+    console.log(STORE.choiceId);
     renderQuizApp();
   });
   // toggle boolean that answer was selected
 // css wise maybe heavier border
 }
-
-
-
 
 function handleQuizApp() {
   // DOM ready function
