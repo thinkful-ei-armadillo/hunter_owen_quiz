@@ -1,0 +1,12 @@
+li.js-choice {
+    list-style: none;
+}
+
+.selected {
+  background-color: red;
+}
+
+.correct {
+  background-color: green;
+}
+
