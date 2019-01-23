@@ -141,8 +141,8 @@ function randomizeChoiceOrder() {
   let i = nums.length;
   let j = 0;
 
-  while (i--) {
-    j = Math.floor(Math.random() * (i+1));
+  for(let x = 0; x < nums.length, x++) {
+    j = Math.floor(Math.random() * (nums.length+1));
     randomNums.push(nums[j]);
     nums.splice(j,1);
   } 
