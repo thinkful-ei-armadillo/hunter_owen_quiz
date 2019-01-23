@@ -136,7 +136,6 @@ function renderQuizApp() {
   }
 }
 
-
 function renderTopPane() {
   let paneHtml = createTopPaneHtml();
   $('.js-top-pane').html(paneHtml);

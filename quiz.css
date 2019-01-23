@@ -1,12 +1,31 @@
+* {
+  box-sizing: border-box;
+  text-align: center;
+}
+
+form.js-multiple-choice-form , form.js-multiple-choice-results {
+  padding: 20px;
+  margin: auto;
+  background-color: lightblue;
+  width: 500px;
+  height: 275px;
+}
+
+
+
 li.js-choice {
     list-style: none;
 }
 
 .selected {
   background-color: red;
+  margin:auto;
+  width: 75%;
 }
 
 .correct {
   background-color: green;
+  margin: auto;
+  width: 75%;
 }
 
