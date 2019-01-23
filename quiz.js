@@ -71,19 +71,29 @@ function createMiddlePaneHtml() {
 function createBottomPaneHtml() {
   return `
   <form class="js-submit-form">
-      <button type="button" class="js-submit-button">Submit</button>
     </form>
     <form class="js-next-form">
       <button type="button" class="js-next-button">Next</button>
   </form>  
-  <span class="quiz-question">${questions[STORE.qNum]}</span>
     <form class="js-multiple-choice-form">
-        <ul class="choices js-current-choices">
-          <li class="js-choice ${STORE.choiceId === STORE.randomOrder[0] ? 'selected' : ''}" id="${STORE.randomOrder[0]}">${answers[STORE.qNum][STORE.randomOrder[0]].a}</li>
-          <li class="js-choice ${STORE.choiceId === STORE.randomOrder[1] ? 'selected' : ''}" id="${STORE.randomOrder[1]}">${answers[STORE.qNum][STORE.randomOrder[1]].a}</li>
-          <li class="js-choice ${STORE.choiceId === STORE.randomOrder[2] ? 'selected' : ''}" id="${STORE.randomOrder[2]}">${answers[STORE.qNum][STORE.randomOrder[2]].a}</li>
-          <li class="js-choice ${STORE.choiceId === STORE.randomOrder[3] ? 'selected' : ''}" id="${STORE.randomOrder[3]}">${answers[STORE.qNum][STORE.randomOrder[3]].a}</li>
-          <li class="js-choice ${STORE.choiceId === STORE.randomOrder[4] ? 'selected' : ''}" id="${STORE.randomOrder[4]}">${answers[STORE.qNum][STORE.randomOrder[4]].a}</li>
+    <input type="submit" class="js-submit-button">
+    <span class="quiz-question">${questions[STORE.qNum]}</span>
+    <ul class="choices js-current-choices" required>
+          <li class="js-choice ${STORE.choiceId === STORE.randomOrder[0] ? 'selected' : ''}" id="${STORE.randomOrder[0]}">${answers[STORE.qNum][STORE.randomOrder[0]].a}
+          <input type="radio" required>
+          </li>
+          <li class="js-choice ${STORE.choiceId === STORE.randomOrder[1] ? 'selected' : ''}" id="${STORE.randomOrder[1]}">${answers[STORE.qNum][STORE.randomOrder[1]].a}
+          <input type="radio" required>
+          </li>
+          <li class="js-choice ${STORE.choiceId === STORE.randomOrder[2] ? 'selected' : ''}" id="${STORE.randomOrder[2]}">${answers[STORE.qNum][STORE.randomOrder[2]].a}
+          <input type="radio" required>
+          </li>
+          <li class="js-choice ${STORE.choiceId === STORE.randomOrder[3] ? 'selected' : ''}" id="${STORE.randomOrder[3]}">${answers[STORE.qNum][STORE.randomOrder[3]].a}
+          <input type="radio" required>
+          </li>
+          <li class="js-choice ${STORE.choiceId === STORE.randomOrder[4] ? 'selected' : ''}" id="${STORE.randomOrder[4]}">${answers[STORE.qNum][STORE.randomOrder[4]].a}
+          <input type="radio" required>
+          </li>
       </ul>
     </form>`;
 }
@@ -172,8 +182,9 @@ function handleNextButton() {
 }
 
 function handleSubmitButton() {
-  $('.js-bottom-pane').on('click', '.js-submit-button', () => {
-    validateEntry();
+  $('.js-bottom-pane').on('click', '.js-submit-button', (event) => {
+    event.preventDefault();
+    // validateEntry();
     gradeAnswer();
     renderQuizApp();
   });
@@ -186,29 +197,28 @@ function handleSubmitButton() {
 }
 
 function validateEntry() {
-  if ($('li').hasClass('selected')) {
-    return true;
+  if (STORE.choiceId !== null) {
+    console.log(true);
   }
   else {
-    return false;
+    console.log(false);
   }
 }
 
 function gradeAnswer() {
-  let answerIndex = $('li').has('selected').attr('id').val();
-  if (answers[STORE.qNum][answerIndex].correct === true) {
+  if (STORE.choiceId === 0) {
     STORE.numRight ++;
   }
   else {
     STORE.numWrong ++;
   }
+  console.log(STORE.numRight);
 }
 
 function handleChoice() {
   $('.js-bottom-pane').on('click', '.js-choice', function(event) {
     let selectedId = $(event.target).attr('id');
     STORE.choiceId = selectedId;
-    console.log(STORE.choiceId);
     renderQuizApp();
   });
   // toggle boolean that answer was selected
