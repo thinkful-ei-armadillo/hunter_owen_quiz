@@ -13,7 +13,9 @@
 const STORE = {
   qNum: null,
   numRight: 0,
-  numWrong: 0
+  numWrong: 0,
+  choiceId: null,
+  randomOrder: []
 };
 
 // questions[i] corresponds with answers[i]
@@ -67,7 +69,7 @@ function createMiddlePaneHtml() {
    <h1 class="js-grade">You have ${STORE.numRight} / ${STORE.qNum} right!</h1>`;
 }
 
-function createBottomPaneHtml(randomOrder) {
+function createBottomPaneHtml() {
   return `
   <form class="js-submit-form">
       <button type="button" class="js-submit-button">Submit</button>
@@ -78,16 +80,14 @@ function createBottomPaneHtml(randomOrder) {
   <span class="quiz-question">${questions[STORE.qNum]}</span>
     <form class="js-multiple-choice-form">
         <ul class="choices js-current-choices">
-          <li class="q1a" id="${randomOrder[0]}">${answers[STORE.qNum][randomOrder[0]].a}</li>
-          <li class="q2a" id="${randomOrder[1]}">${answers[STORE.qNum][randomOrder[1]].a}</li>
-          <li class="q3a" id="${randomOrder[2]}">${answers[STORE.qNum][randomOrder[2]].a}</li>
-          <li class="q4a" id="${randomOrder[3]}">${answers[STORE.qNum][randomOrder[3]].a}</li>
-          <li class="q5a" id="${randomOrder[4]}">${answers[STORE.qNum][randomOrder[4]].a}</li>
+          <li class="js-choice ${STORE.choiceId === STORE.randomOrder[0] ? 'selected' : ''}" id="${STORE.randomOrder[0]}">${answers[STORE.qNum][STORE.randomOrder[0]].a}</li>
+          <li class="js-choice ${STORE.choiceId === STORE.randomOrder[1] ? 'selected' : ''}" id="${STORE.randomOrder[1]}">${answers[STORE.qNum][STORE.randomOrder[1]].a}</li>
+          <li class="js-choice ${STORE.choiceId === STORE.randomOrder[2] ? 'selected' : ''}" id="${STORE.randomOrder[2]}">${answers[STORE.qNum][STORE.randomOrder[2]].a}</li>
+          <li class="js-choice ${STORE.choiceId === STORE.randomOrder[3] ? 'selected' : ''}" id="${STORE.randomOrder[3]}">${answers[STORE.qNum][STORE.randomOrder[3]].a}</li>
+          <li class="js-choice ${STORE.choiceId === STORE.randomOrder[4] ? 'selected' : ''}" id="${STORE.randomOrder[4]}">${answers[STORE.qNum][STORE.randomOrder[4]].a}</li>
       </ul>
     </form>`;
 }
-
-
 
 // potentially pass parameters
 function renderQuizApp() {
@@ -98,6 +98,7 @@ function renderQuizApp() {
     renderTopPane();
     renderMiddlePane();
     renderBottomPane();
+    console.log('rendering panes');
   }
   else if (STORE.qNum >= questions.length) {
     renderTopPane();
@@ -110,7 +111,6 @@ function renderQuizApp() {
 function renderTopPane() {
   let paneHtml = createTopPaneHtml();
   $('.js-top-pane').html(paneHtml);
-  console.log('rendering top pane');
   // render start
 }
 
@@ -121,8 +121,7 @@ function renderMiddlePane() {
 }
 
 function renderBottomPane() {
-  let randomOrder = randomizeChoiceOrder();
-  let paneHtml = createBottomPaneHtml(randomOrder);
+  let paneHtml = createBottomPaneHtml();
   console.log(answers[STORE.qNum][0].a);
   $('.js-bottom-pane').html(paneHtml);
   
@@ -155,6 +154,7 @@ function handleStartButton() {
 // start quiz button will also reset quiz, bring us to Q1
 // reset numRight, numWrong, set qNum = 0
   $('.js-top-pane').on('click', '.js-start-button', () => {
+    STORE.randomOrder = randomizeChoiceOrder();
     STORE.qNum = 0;
     STORE.numRight = 0;
     STORE.numWrong = 0;
@@ -206,7 +206,11 @@ function gradeAnswer() {
 }
 
 function handleChoice() {
-// toggle boolean that answer was selected
+  $('.js-current-choices').on('click', '.js-choice', function (event) {
+    let selectedId = $(event.currentTarget).attr('id');
+    STORE.choiceId = selectedId;
+  });
+  // toggle boolean that answer was selected
 // css wise maybe heavier border
 }
 
