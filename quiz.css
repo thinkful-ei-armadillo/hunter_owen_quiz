@@ -5,27 +5,48 @@
 
 form.js-multiple-choice-form , form.js-multiple-choice-results {
   padding: 20px;
+  border-radius: 25%;
   margin: auto;
-  background-color: lightblue;
+  background-color: powderblue;
   width: 500px;
   height: 275px;
 }
-
-
 
 li.js-choice {
     list-style: none;
 }
 
 .selected {
-  background-color: red;
+  background-color: rgb(255, 101, 101);
   margin:auto;
   width: 75%;
 }
 
 .correct {
-  background-color: green;
+  background-color: lightgreen;
   margin: auto;
   width: 75%;
 }
 
+button {
+  background-color: purple;
+  color: white;
+}
+
+input.js-submit-button {
+  background-color: purple;
+  color: white;
+  border-radius: 75%;
+}
+
+ul.js-current-choices, span.quiz-question {
+  color: purple;
+}
+
+body {
+  background-image: url("https://user-images.githubusercontent.com/45447942/52237518-f5700a00-2886-11e9-8870-cf7bf9c8e8dd.jpg");
+}
+
+h1 {
+  color: white;
+}
